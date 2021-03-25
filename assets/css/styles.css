@@ -1,3 +1,27 @@
 body {
+    background-color: #fff;
+}
+
+header {
+    display: flex;
+    background-color: lightblue;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+}
+
+header h1 {
+    color: rgb(29, 29, 29)
+}
+
+/* #search-button {
+    border: 1px solid black;
+} */
+.sec {
     background-color: blanchedalmond;
+    margin: 5px;
+}
+
+.row {
+    margin: 0;
 }

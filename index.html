@@ -4,19 +4,74 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./assets/css/reset.css">
+    <!-- <link rel="stylesheet" href="./assets/css/reset.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/css/styles.css">
-    <link rel="icon" href=''>
+    <link rel="icon" href='https://i.pinimg.com/originals/44/d0/5b/44d05b2e0318c257fb9e57427c0a0091.png'>
     
-    <title>Document</title>
+    <title>Weather Dashboard</title>
 </head>
 
 <body>
     
+    <header>
+        <h1>Weather dashboard</h1>
+    </header>
 
+    <div class="row">
+        <article class="col-2 sec">
+            <label for="city-search">Search your city:</label>
+            <input type="text" id="city-search">
+            <button id="search-button" class="radius button">look up!</button>
 
+            <div id="past-search">
 
+            </div>
 
+        </article>
+
+        <article class="col-9 sec">
+            <section>
+                <h2>Atlanta</h2>
+                <p>Temerature: 90</p>
+                <p>humidity: 90</p>
+                <p>windspeed: 90</p>
+                <p>uv index: 90</p>
+            </section>
+
+            <section>
+                <h3>5 day forecast</h3>
+                <div class="row">
+                    <div class="col card">
+                        <strong>tuesday</strong>
+                        <p>Temerature: 90</p>
+                        <p>humidity: 90</p>
+                    </div>
+                    <div class="col card">
+                        <strong>wed</strong>
+                        <p>Temerature: 90</p>
+                        <p>humidity: 90</p>
+                    </div>
+                    <div class="col card">
+                        <strong>thurs</strong>
+                        <p>Temerature: 90</p>
+                        <p>humidity: 90</p>
+                    </div>
+                    <div class="col card">
+                        <strong>fri</strong>
+                        <p>Temerature: 90</p>
+                        <p>humidity: 90</p>
+                    </div>
+                    <div class="col card">
+                        <strong>sat</strong>
+                        <p>Temerature: 90</p>
+                        <p>humidity: 90</p>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </div>
+    
 
 
 
