@@ -25,3 +25,7 @@ header h1 {
 .row {
     margin: 0;
 }
+
+.card {
+    margin: 0 3px;
+}
