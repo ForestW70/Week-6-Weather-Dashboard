@@ -30,7 +30,7 @@ function loadDefaultCity() {
 
             let cityLat = data.city.coord.lat;
             let cityLong = data.city.coord.lon;
-            getUvIndex(cityLat, cityLong);
+            getDaily(cityLat, cityLong);
             
             $("#todayCity").text(`${selCity}, ${selCountry}`);
             $("#todayTemp").text(`It is currently ${curTemp}°F`);
@@ -41,11 +41,14 @@ function loadDefaultCity() {
             $("#todayHumid").text(`Humidity is currently at ${curHumidity}%`);
             $("#todayWind").text(`The wind is blowing at ${curWindSpeed} in the ${curWindDeg}° direction.`);
             $("#todayBlurb").text(`Looks like ${curStatus} ahead!`);
+
+            
         });
 }
 
-function getUvIndex(x, y) {
-    const uvUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${x}&lon=${y}&units=imperial&cnt=1&appid=3807d383248b2e55ef5982aac69761eb`;
+function getDaily(x, y) {
+    forcastContainer.append("");
+    const uvUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${x}&lon=${y}&units=imperial&exclude=hourly,minutely&cnt=6&appid=3807d383248b2e55ef5982aac69761eb`;
     fetch(uvUrl)
         .then(function (response) {
             return response.json();
@@ -54,8 +57,48 @@ function getUvIndex(x, y) {
             console.log(data);
             let uvIndex = data.current.uvi;
             $("#todayUv").text(`UV index: ${uvIndex}`);
+
+            for (i=1; i < 6; i++) {
+                let parent = document.createElement("div");
+                parent.setAttribute("id", `day${i}`);
+                parent.setAttribute("class", "col-2 card");
+                forcastContainer.append(parent);
+        
+
+                let icon = "https://openweathermap.org/img/w/" + data.daily[i].weather[0].icon + ".png";
+
+                $(`#day${i}`).append(`<img src="${icon}">`);
+
+                $(`#day${i}`).append(`<strong>day${i}</strong>`);
+                $(`#day${i}`).append(`<p>Daily high: ${Math.round(data.daily[i].temp.max)}°F</p>`);
+                $(`#day${i}`).append(`<p>Daily low: ${Math.round(data.daily[i].temp.min)}°F</p>`);
+                $(`#day${i}`).append(`<p>humidity: ${data.daily[i].humidity}%</p>`);
+                
+
+        
+                
+            }
         });    
 }
+
+// function pushFiveDayForecast(data) {
+//     for (i=1; i <= data.list.length; i++) {
+//         let parent = document.createElement("div");
+//         parent.setAttribute("id", i);
+//         parent.setAttribute("class", "col-2 card");
+//         forcastContainer.append(parent);
+
+//         let cardDateRaw = data.list[i].clouds.dt_text.split(" ");
+//         let cardDateElements = cardDateRaw[0].split("-");
+//         let cardDate = `${cardDateElements[1]} / ${cardDateElements[2]}`;
+        
+//         document.getElementById(`"${i}"`).append(`<strong>${cardDate}</strong>`);
+//         document.getElementById(`"${i}"`).append(`<p>${data.list[i].main.temp}</p>`);
+//         document.getElementById(`"${i}"`).append(`<p>${data.list[i].main.humidity}</p>`);
+
+        
+//     }
+// }
 
 loadDefaultCity();
 
@@ -99,7 +142,7 @@ searchButton.click( (e) => {
 
             let cityLat = data.city.coord.lat;
             let cityLong = data.city.coord.lon;
-            getUvIndex(cityLat, cityLong);
+            getDaily(cityLat, cityLong);
             
             $("#todayCity").text(`${selCity}, ${selCountry}`);
             $("#todayTemp").text(`It is currently ${curTemp}°F`);
@@ -110,6 +153,7 @@ searchButton.click( (e) => {
             $("#todayHumid").text(`Humidity is currently at ${curHumidity}%`);
             $("#todayWind").text(`The wind is blowing at ${curWindSpeed} in the ${curWindDeg}° direction.`);
             $("#todayBlurb").text(`Looks like ${curStatus} ahead!`);
+            
         });
 
 })
