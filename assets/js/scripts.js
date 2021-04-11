@@ -4,6 +4,9 @@ const savedCityList = $("#past-search");
 const forcastContainer = $("#forecast");
 const currentWeather = $("#current-weather");
 
+let today = new moment().format("MMM Do");
+console.log(today);
+
 
 function loadDefaultCity() {
     const defaultUrl = "https://api.openweathermap.org/data/2.5/forecast?q=washington%20dc&cnt=6&units=imperial&appid=3807d383248b2e55ef5982aac69761eb";
@@ -26,6 +29,18 @@ function loadDefaultCity() {
             let curHumidity = Math.round(data.list[0].main.humidity);
             let curWindSpeed = Math.round(data.list[0].wind.speed);
             let curWindDeg = data.list[0].wind.deg;
+            let curWindDir;
+
+            if (curWindDeg >= 315 && curWindDeg <= 45) {
+                curWindDir = "Northernly";
+            } else if (curWindDeg >= 46 && curWindDeg <= 135) {
+                curWindDir = "Easternly";
+            } else if (curWindDeg >= 136 && curWindDeg <= 225) {
+                curWindDir = "Southernly";
+            } else {
+                curWindDir = "Westernly";
+            }
+
             let curStatus = data.list[0].weather[0].description;
 
             let cityLat = data.city.coord.lat;
@@ -39,7 +54,7 @@ function loadDefaultCity() {
             $("#dailyLow").text(`Today's Low is ${minTemp}°F`);
 
             $("#todayHumid").text(`Humidity is currently at ${curHumidity}%`);
-            $("#todayWind").text(`The wind is blowing at ${curWindSpeed} in the ${curWindDeg}° direction.`);
+            $("#todayWind").text(`The wind is blowing at ${curWindSpeed} MPH in the ${curWindDir} direction.`);
             $("#todayBlurb").text(`Looks like ${curStatus} ahead!`);
 
             
@@ -56,24 +71,36 @@ function getDaily(x, y) {
         .then(function (data) {
             console.log(data);
             let uvIndex = data.current.uvi;
-            $("#todayUv").text(`UV index: ${uvIndex}`);
+            const todayUv = $("#todayUv");
+            todayUv.text(`UV index: ${uvIndex}`);
+
+            if (uvIndex >= 0 && uvIndex <= 2) {
+                todayUv.css("color", "green");
+            } else if (uvIndex > 2 && uvIndex <= 5) {
+                todayUv.css("color", "#e8e810");
+            } else if (uvIndex > 5 && uvIndex <= 7) {
+                todayUv.css("color", "orange");
+            }else {
+                todayUv.css("color", "red");
+            }
 
             for (i=1; i < 6; i++) {
-                let parent = document.createElement("div");
-                parent.setAttribute("id", `day${i}`);
-                parent.setAttribute("class", "col-2 card");
-                forcastContainer.append(parent);
-        
+                
+                let forecastDay = new Date();
+                forecastDay.setDate(forecastDay.getDate() + i);
+                let newD = forecastDay.toDateString();
+                let dayComponents = newD.split(" ");
+                let postDate = `${dayComponents[0]}, ${dayComponents[1]} ${dayComponents[2]}`;
 
                 let icon = "https://openweathermap.org/img/w/" + data.daily[i].weather[0].icon + ".png";
-
-                $(`#day${i}`).append(`<img src="${icon}">`);
-
-                $(`#day${i}`).append(`<strong>day${i}</strong>`);
-                $(`#day${i}`).append(`<p>Daily high: ${Math.round(data.daily[i].temp.max)}°F</p>`);
-                $(`#day${i}`).append(`<p>Daily low: ${Math.round(data.daily[i].temp.min)}°F</p>`);
-                $(`#day${i}`).append(`<p>humidity: ${data.daily[i].humidity}%</p>`);
                 
+                $(`#day${i} img`).attr("src", icon);
+                $(`#day${i} strong`).text(postDate);
+                $(`#day${i} h3`).text(`Daily high: ${Math.round(data.daily[i].temp.max)}°F`);
+                $(`#day${i} p`).text(`Daily low: ${Math.round(data.daily[i].temp.min)}°F`);
+                $(`#day${i} span`).text(`humidity: ${data.daily[i].humidity}%`);
+
+
 
         
                 
@@ -81,24 +108,6 @@ function getDaily(x, y) {
         });    
 }
 
-// function pushFiveDayForecast(data) {
-//     for (i=1; i <= data.list.length; i++) {
-//         let parent = document.createElement("div");
-//         parent.setAttribute("id", i);
-//         parent.setAttribute("class", "col-2 card");
-//         forcastContainer.append(parent);
-
-//         let cardDateRaw = data.list[i].clouds.dt_text.split(" ");
-//         let cardDateElements = cardDateRaw[0].split("-");
-//         let cardDate = `${cardDateElements[1]} / ${cardDateElements[2]}`;
-        
-//         document.getElementById(`"${i}"`).append(`<strong>${cardDate}</strong>`);
-//         document.getElementById(`"${i}"`).append(`<p>${data.list[i].main.temp}</p>`);
-//         document.getElementById(`"${i}"`).append(`<p>${data.list[i].main.humidity}</p>`);
-
-        
-//     }
-// }
 
 loadDefaultCity();
 
@@ -138,6 +147,18 @@ searchButton.click( (e) => {
             let curHumidity = Math.round(data.list[0].main.humidity);
             let curWindSpeed = Math.round(data.list[0].wind.speed);
             let curWindDeg = data.list[0].wind.deg;
+            let curWindDir;
+
+            if (curWindDeg >= 315 && curWindDeg <= 45) {
+                curWindDir = "Northernly";
+            } else if (curWindDeg >= 46 && curWindDeg <= 135) {
+                curWindDir = "Easternly";
+            } else if (curWindDeg >= 136 && curWindDeg <= 225) {
+                curWindDir = "Southernly";
+            } else {
+                curWindDir = "Westernly";
+            }
+
             let curStatus = data.list[0].weather[0].description;
 
             let cityLat = data.city.coord.lat;
@@ -151,7 +172,7 @@ searchButton.click( (e) => {
             $("#dailyLow").text(`Today's Low is ${minTemp}°F`);
 
             $("#todayHumid").text(`Humidity is currently at ${curHumidity}%`);
-            $("#todayWind").text(`The wind is blowing at ${curWindSpeed} in the ${curWindDeg}° direction.`);
+            $("#todayWind").text(`The wind is blowing at ${curWindSpeed} MPH in the ${curWindDir} direction.`);
             $("#todayBlurb").text(`Looks like ${curStatus} ahead!`);
             
         });

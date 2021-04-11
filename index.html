@@ -7,6 +7,8 @@
     <!-- <link rel="stylesheet" href="./assets/css/reset.css"> -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;700&family=Playfair+Display:wght@500&family=Roboto+Slab&display=swap" rel="stylesheet">
     <link rel="icon" href='https://i.pinimg.com/originals/44/d0/5b/44d05b2e0318c257fb9e57427c0a0091.png'>
     
     <title>Weather Dashboard</title>
@@ -19,9 +21,9 @@
     </header>
 
     <div class="row">
-        <article class="col-2 sec">
-            <label for="city-search">Search your city:</label>
-            <input type="text" id="city-search">
+        <article class="col-12 col-lg-2 sec side-nav">
+            <label for="city-search" class="search-label">Search your city:</label>
+            <input type="text" id="city-search" placeholder="try: London" autocomplete="on" name="location">
             <button id="search-button" class="radius button">look up!</button>
 
             <div id="past-search">
@@ -30,31 +32,68 @@
 
         </article>
 
-        <article class="col-9 sec">
-            <section id="current-weather" class="row">
-                <h2 id="todayCity"></h2>
+        <article class="col-12 col-lg-9 sec big-box">
+            <div class="row top-row">
+                <section id="current-weather" class="row">
+                    <article id="cityCont" class="col-8 col-lg-3">
+                        <h2 id="todayCity"></h2>
+                        <p id="todayBlurb"></p>
+                    </article>
 
-                <article id="tempInfo" class="col-4 sec">
-                    <p id="todayTemp"></p>
-                    <p id="feelsLike"></p>
-                    <p id="dailyHigh"></p>
-                    <p id="dailyLow"></p>
-                </article>
+                    <article id="tempInfo" class="col-8 col-lg-4 sec">
+                        <p id="todayTemp"></p>
+                        <p id="feelsLike"></p>
+                        <p id="dailyHigh"></p>
+                        <p id="dailyLow"></p>
+                    </article>
 
-                <article id="weatherInfo" class="col-4 sec">
-                    
-                    <p id="todayHumid"></p>
-                    <p id="todayWind"></p>
-                    <p id="todayUv"></p>
-                    <p id="todayBlurb"></p>
-                </article>
-            </section>
+                    <article id="weatherInfo" class="col-8 col-lg-4 sec">
+                        
+                        <p id="todayHumid"></p>
+                        <p id="todayWind"></p>
+                        <p id="todayUv"></p>
+                    </article>
+                </section>
+            </div>
 
-
-            <section>
+            <section id="forecastCont">
                 <h3>5 day forecast</h3>
-                <div id="forecast" class="row">
-                    
+                <div id="forecast" class="row sec">
+                    <div id="day1" class="col-8 col-lg-2 card sec">
+                        <img src="">
+                        <strong class="daily-items"></strong>
+                        <h3 class="daily-items"></h3>
+                        <p class="daily-items"></p>
+                        <span class="daily-items"></span>
+                    </div>
+                    <div id="day2" class="col-8 col-lg-2 card sec">
+                        <img src="">
+                        <strong class="daily-items"></strong>
+                        <h3 class="daily-items"></h3>
+                        <p class="daily-items"></p>
+                        <span class="daily-items"></span>
+                    </div>
+                    <div id="day3" class="col-8 col-lg-2 card sec">
+                        <img src="">
+                        <strong class="daily-items"></strong>
+                        <h3 class="daily-items"></h3>
+                        <p class="daily-items"></p>
+                        <span class="daily-items"></span>
+                    </div>
+                    <div id="day4" class="col-8 col-lg-2 card sec">
+                        <img src="">
+                        <strong class="daily-items"></strong>
+                        <h3 class="daily-items"></h3>
+                        <p class="daily-items"></p>
+                        <span class="daily-items"></span>
+                    </div>
+                    <div id="day5" class="col-8 col-lg-2 card sec">
+                        <img src="">
+                        <strong class="daily-items"></strong>
+                        <h3 class="daily-items"></h3>
+                        <p class="daily-items"></p>
+                        <span class="daily-items"></span>
+                    </div>
                 </div>
             </section>
         </article>
@@ -65,6 +104,8 @@
 
 
 </body>
+<script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="

@@ -10,22 +10,147 @@ header {
     align-items: center;
 }
 
+
 header h1 {
-    color: rgb(29, 29, 29)
+    color: rgb(251 255 0);
 }
+
+h2, h3, h4, span, p {
+    color: #968a8a;
+}
+
+.search-label {
+    /* text-decoration: underline; */
+    font-size: 4rem;
+    font-family: system-ui;
+    padding-top: 15px;
+    color: #434646;
+    border-bottom: 20px dotted #fff14f;
+    text-shadow: 0px 1px 1px #ded0d0;
+    line-height: 55px;
+}
+
+#city-search {
+    width: 100%;
+    padding-bottom: 5px;
+    margin: 10px 0;
+}
+
+
+
 
 /* #search-button {
     border: 1px solid black;
 } */
-.sec {
-    background-color: blanchedalmond;
-    margin: 5px;
+
+.row {
+    flex-wrap: nowrap;
 }
+
+.sec {
+    background-color: #fff;
+    border-radius: 100px;
+}
+
+.side-nav {
+    margin: 0 auto;
+    background-color: transparent;
+}
+
+.big-box {
+    margin: auto;
+    background-color: lightblue;
+}
+
+.top-row {
+    padding-top: 30px;
+    margin-top: 5px;
+}
+
+#current-weather {
+    margin: auto;
+}
+
+#cityCont {
+    margin: auto;
+    text-align: center;
+}
+
+#todayCity {
+    text-decoration: underline;
+    font-family: 'Playfair Display', serif;
+    text-shadow: 1px 1px black;
+    color: #312e2e;
+}
+
+#tempInfo, #weatherInfo {
+    margin: 10px;
+    padding-top: 20px;
+}
+
+#tempInfo p, #weatherInfo p {
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: 100;
+    font-style: italic;
+    font-size: 1.2rem;
+}
+
+#forecastCont {
+    margin-top: 30px;
+}
+
+#forecastCont h3 {
+    text-align: center;
+}
+
+#forecast {
+    background-color: transparent;
+    margin-top: 20px;
+}
+
+#forecast img {
+    height: 6vmax;
+    width: 6vmax;
+    margin: auto;
+}
+
+.daily-items{
+    margin: 3px auto;
+    font-size: small;
+}
+
 
 .row {
     margin: 0;
 }
 
 .card {
-    margin: 0 3px;
+    margin: 15px auto;
+    background-color: #fff;
+    padding: 20px;
+    
+}
+
+/* @media screen and (max-width: 1000px) {
+   
+} */
+
+@media screen and (max-width: 992px) {
+    .row {
+        flex-wrap: wrap;
+    }
+    #tempInfo, #weatherInfo {
+        margin: 10px auto;
+    }
+    .search-label {
+        font-size: 5vmax;
+    }
+    
+    #tempInfo p, #weatherInfo p, .card {
+        font-size: 2vmax;
+    }
+    #todayCity, #todayBlurb {
+        font-size: 4vmax;
+    }
 }
