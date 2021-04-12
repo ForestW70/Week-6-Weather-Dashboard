@@ -11,11 +11,7 @@ header {
 }
 
 
-header h1 {
-    color: rgb(251 255 0);
-}
-
-h2, h3, h4, span, p {
+h1, h2, h3, h4, span, p {
     color: #968a8a;
 }
 
@@ -37,19 +33,24 @@ h2, h3, h4, span, p {
 }
 
 .old-search {
-    border: 0.5px solid black;
+    border: 0.5px solid #0fb7a0;
     border-radius: 5px;
+    margin: 5px 0;
 }
 
 
 
 
-/* #search-button {
-    border: 1px solid black;
-} */
+#search-button {
+    margin-bottom: 10px;
+}
 
 .row {
     flex-wrap: nowrap;
+}
+
+.col {
+    padding-left: 0;
 }
 
 .sec {
@@ -60,7 +61,10 @@ h2, h3, h4, span, p {
 .side-nav {
     margin: 0 auto;
     background-color: transparent;
+    padding-left: 0;
 }
+
+
 
 .big-box {
     margin: auto;
@@ -101,12 +105,17 @@ h2, h3, h4, span, p {
     font-size: 1.2rem;
 }
 
+#cityCont h6 {
+    font-weight: 100;
+}
+
 #forecastCont {
     margin-top: 30px;
 }
 
-#forecastCont h3 {
+#forecastCont h2 {
     text-align: center;
+    color: yellow;
 }
 
 #forecast {
@@ -137,9 +146,6 @@ h2, h3, h4, span, p {
     
 }
 
-/* @media screen and (max-width: 1000px) {
-   
-} */
 
 @media screen and (max-width: 992px) {
     .row {
@@ -148,14 +154,17 @@ h2, h3, h4, span, p {
     #tempInfo, #weatherInfo {
         margin: 10px auto;
     }
-    .search-label {
-        font-size: 5vmax;
-    }
     
     #tempInfo p, #weatherInfo p, .card {
         font-size: 2vmax;
     }
     #todayCity, #todayBlurb {
         font-size: 4vmax;
+    }
+    .old-search {
+        display: none;
+    }
+    #clear-history {
+        display: none;
     }
 }

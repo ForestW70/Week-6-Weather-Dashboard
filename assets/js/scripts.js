@@ -1,16 +1,41 @@
-const searchButton = $("#search-button");
-const selectedCity = $("#city-search");
-const savedCityList = $("#past-search");
-const forcastContainer = $("#forecast");
-const currentWeather = $("#current-weather");
 
-let today = new moment().format("MMM Do");
-console.log(today);
+const savedCityList = $("#past-search");
+let searchIndex = 0;
+let isReal = false;
+
+loadDefaultCity();
+
+
+
+if (localStorage.getItem("data") != null) {
+    loadDefaultCity();
+    const searchP = document.createElement("p");
+    searchP.innerText = "Washington DC";
+    searchP.classList.add("col-11", "old-search");
+    searchP.setAttribute("onClick", `searchByCity("washington dc")`)
+    savedCityList.append(searchP);
+
+
+    let recentArray = JSON.parse(localStorage.getItem("data"));
+    recentArray.forEach( (search, index) => {
+
+        const searchP = document.createElement("p");
+        searchP.innerText = search;
+        searchP.classList.add("col-11", "old-search");
+        searchP.setAttribute("onClick", `searchByCity("${search}")`)
+        savedCityList.append(searchP);
+        
+
+        searchIndex = index + 1;
+
+    })
+
+}
 
 
 function loadDefaultCity() {
-    const defaultUrl = "https://api.openweathermap.org/data/2.5/forecast?q=washington%20dc&cnt=6&units=imperial&appid=3807d383248b2e55ef5982aac69761eb";
 
+    const defaultUrl = "https://api.openweathermap.org/data/2.5/forecast?q=washington%20dc&cnt=6&units=imperial&appid=3807d383248b2e55ef5982aac69761eb";
     fetch(defaultUrl)
         .then(function (response) {
             return response.json();
@@ -58,20 +83,67 @@ function loadDefaultCity() {
             $("#todayWindDir").text(`in the ${curWindDir} direction.`);
 
             $("#todayBlurb").text(`Looks like ${curStatus} ahead!`);
-
-            
+ 
         });
 }
 
+
 function getDaily(x, y) {
-    forcastContainer.append("");
+    $("#forecast").append("");
+    
     const uvUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${x}&lon=${y}&units=imperial&exclude=hourly,minutely&cnt=6&appid=3807d383248b2e55ef5982aac69761eb`;
     fetch(uvUrl)
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
+            
+            isReal = true;
+
+            let timeStamp = data.current.dt;
+            let timeZone = data.timezone_offset;
+            let curTime = (timeStamp * 1000) + (timeZone * 1000);
+            console.log(curTime);
+
+            let unixDate = new Date(curTime);
+            let isPm = false;
+            
+            let hours = unixDate.getHours() + 4;
+            if (hours > 0 && hours < 12) {
+                hours = hours;
+                isPm = false;
+            } else if (hours > 12 && hours < 24) {
+                hours = hours - 12;
+                isPm = true;
+            } else if (hours == 24) {
+                hours = 12;
+                isPm = false;
+            } else if (hours > 24) {
+                hours = hours - 24;
+                isPm = false;
+            } else {
+                hours = 12;
+                isPm = true;
+            }
+            
+            let minutes = unixDate.getMinutes();
+            if(minutes < 10) {
+                minutes = "0" + minutes;
+            }
+
+            let realTime = hours + ":" + minutes;
+
+            let realDateParts = unixDate.toDateString().split(" ");
+            let realDate = realDateParts[0] + ", " + realDateParts[1] + " " + realDateParts[2] + ",";
+
+            if (isPm) {
+                $("#cityTime").text(realTime + " PM");
+            } else {
+                $("#cityTime").text(realTime + " AM");
+            }
+
+            $("#cityDate").text(realDate);
+
             let uvIndex = data.current.uvi;
             const todayUv = $("#todayUv");
             todayUv.text(`UV index: ${uvIndex}`);
@@ -101,49 +173,13 @@ function getDaily(x, y) {
                 $(`#day${i} h3`).text(`Daily high: ${Math.round(data.daily[i].temp.max)}°F`);
                 $(`#day${i} p`).text(`Daily low: ${Math.round(data.daily[i].temp.min)}°F`);
                 $(`#day${i} span`).text(`humidity: ${data.daily[i].humidity}%`);
-
-
-
-        
-                
+  
             }
         });    
 }
 
 
-loadDefaultCity();
-
-
-$("#clear-history").click( (e) => {
-    e.preventDefault();
-    localStorage.setItem("data", "[]");
-    $("#past-search").html(" ");
-    searchIndex = 0;
-})
-
-
-
-let searchIndex = 0;
-
-searchButton.click( (e) => {
-    e.preventDefault();
-    let city = selectedCity.val();
-    
-
-    if (localStorage.getItem("data") == null) {
-        localStorage.setItem("data", "[]");
-    }
-
-    let dataBox = JSON.parse(localStorage.getItem("data"));
-    dataBox.push(city);
-
-    localStorage.setItem("data", JSON.stringify(dataBox));
-
-    
-    appendSearch(searchIndex);
-    searchIndex++;
-    
-    
+function searchByCity(city) {
     const baseUrl = "https://api.openweathermap.org/data/2.5/forecast?";
     const inputCity = `q=${city}`;
     const timeSpan = "&cnt=6";
@@ -152,10 +188,11 @@ searchButton.click( (e) => {
 
     fetch(requestUrl)
         .then(function (response) {
+           
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
+            isReal = true;
             console.log(requestUrl);
             let selCity = data.city.name;
             let selCountry = data.city.country;
@@ -197,11 +234,9 @@ searchButton.click( (e) => {
             $("#todayWindDir").text(`in the ${curWindDir} direction.`);
 
             $("#todayBlurb").text(`Looks like ${curStatus} ahead!`);
-            
+            return true;
         });
-
-})
-
+}
 
 
 function appendSearch(index) {
@@ -210,18 +245,52 @@ function appendSearch(index) {
     if (localStorage.getItem("data") != null) {
         let recentArray = JSON.parse(localStorage.getItem("data"));
         let newAppend = recentArray[index];
-        savedCityList.append(`<p class="old-search">${newAppend}</p>`)
+        const searchP = document.createElement("p");
+        searchP.innerText = newAppend;
+        searchP.classList.add("col-11", "old-search");
+        searchP.setAttribute("onClick", `searchByCity("${newAppend}")`);
+        savedCityList.append(searchP);
+
     }
 }
 
 
-if (localStorage.getItem("data") != null) {
-    let recentArray = JSON.parse(localStorage.getItem("data"));
-    recentArray.forEach( (search, index) => {
-        let bootAppend = recentArray[index];
-        savedCityList.append(`<p class="old-search">${bootAppend}</p>`);
-        searchIndex = index + 1;
 
-    })
+$("#search-button").click( (e) => {
+    e.preventDefault();
+    let city = $("#city-search").val();
 
-}
+    searchByCity(city);
+    
+
+    if (localStorage.getItem("data") == null) {
+        localStorage.setItem("data", "[]");
+    }
+
+    let dataBox = JSON.parse(localStorage.getItem("data"));
+    
+    if (dataBox.indexOf(city) == -1) {
+        dataBox.push(city);
+        console.log(dataBox);
+        localStorage.setItem("data", JSON.stringify(dataBox));
+        appendSearch(searchIndex);
+        searchIndex++;
+    } 
+
+    
+
+})
+
+
+$("#clear-history").click( (e) => {
+    e.preventDefault();
+    localStorage.setItem("data", "[]");
+    $("#past-search").html(" ");
+    searchIndex = 0;
+})
+
+
+
+
+
+
