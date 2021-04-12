@@ -23,8 +23,9 @@
     <div class="row">
         <article class="col-12 col-lg-2 sec side-nav">
             <label for="city-search" class="search-label">Search your city:</label>
-            <input type="text" id="city-search" placeholder="try: London" autocomplete="on" name="location">
+            <input type="text" id="city-search" placeholder="eg. London" autocomplete="on" name="location">
             <button id="search-button" class="radius button">look up!</button>
+            <button id="clear-history" class="radius button">clear history</button>
 
             <div id="past-search">
 
@@ -39,7 +40,7 @@
                         <h2 id="todayCity"></h2>
                         <p id="todayBlurb"></p>
                     </article>
-
+                    
                     <article id="tempInfo" class="col-8 col-lg-4 sec">
                         <p id="todayTemp"></p>
                         <p id="feelsLike"></p>
@@ -47,10 +48,11 @@
                         <p id="dailyLow"></p>
                     </article>
 
-                    <article id="weatherInfo" class="col-8 col-lg-4 sec">
+                    <article id="weatherInfo" class="col-8 col-lg-5 sec">
                         
                         <p id="todayHumid"></p>
                         <p id="todayWind"></p>
+                        <p id="todayWindDir"></p>
                         <p id="todayUv"></p>
                     </article>
                 </section>

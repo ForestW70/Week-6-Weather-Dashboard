@@ -54,7 +54,9 @@ function loadDefaultCity() {
             $("#dailyLow").text(`Today's Low is ${minTemp}°F`);
 
             $("#todayHumid").text(`Humidity is currently at ${curHumidity}%`);
-            $("#todayWind").text(`The wind is blowing at ${curWindSpeed} MPH in the ${curWindDir} direction.`);
+            $("#todayWind").text(`The wind is blowing at ${curWindSpeed} MPH`);
+            $("#todayWindDir").text(`in the ${curWindDir} direction.`);
+
             $("#todayBlurb").text(`Looks like ${curStatus} ahead!`);
 
             
@@ -112,15 +114,34 @@ function getDaily(x, y) {
 loadDefaultCity();
 
 
+$("#clear-history").click( (e) => {
+    e.preventDefault();
+    localStorage.setItem("data", "[]");
+    $("#past-search").html(" ");
+    searchIndex = 0;
+})
 
 
 
-
-
+let searchIndex = 0;
 
 searchButton.click( (e) => {
     e.preventDefault();
     let city = selectedCity.val();
+    
+
+    if (localStorage.getItem("data") == null) {
+        localStorage.setItem("data", "[]");
+    }
+
+    let dataBox = JSON.parse(localStorage.getItem("data"));
+    dataBox.push(city);
+
+    localStorage.setItem("data", JSON.stringify(dataBox));
+
+    
+    appendSearch(searchIndex);
+    searchIndex++;
     
     
     const baseUrl = "https://api.openweathermap.org/data/2.5/forecast?";
@@ -172,9 +193,35 @@ searchButton.click( (e) => {
             $("#dailyLow").text(`Today's Low is ${minTemp}°F`);
 
             $("#todayHumid").text(`Humidity is currently at ${curHumidity}%`);
-            $("#todayWind").text(`The wind is blowing at ${curWindSpeed} MPH in the ${curWindDir} direction.`);
+            $("#todayWind").text(`The wind is blowing at ${curWindSpeed} MPH`);
+            $("#todayWindDir").text(`in the ${curWindDir} direction.`);
+
             $("#todayBlurb").text(`Looks like ${curStatus} ahead!`);
             
         });
 
 })
+
+
+
+function appendSearch(index) {
+    console.log(localStorage)
+
+    if (localStorage.getItem("data") != null) {
+        let recentArray = JSON.parse(localStorage.getItem("data"));
+        let newAppend = recentArray[index];
+        savedCityList.append(`<p class="old-search">${newAppend}</p>`)
+    }
+}
+
+
+if (localStorage.getItem("data") != null) {
+    let recentArray = JSON.parse(localStorage.getItem("data"));
+    recentArray.forEach( (search, index) => {
+        let bootAppend = recentArray[index];
+        savedCityList.append(`<p class="old-search">${bootAppend}</p>`);
+        searchIndex = index + 1;
+
+    })
+
+}
