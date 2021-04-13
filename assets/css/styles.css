@@ -162,4 +162,17 @@ h2, h3, h4, span, p {
     #clear-history {
         display: none;
     }
+    .sec {
+        border-radius: 50px;
+    }
+}
+
+/* for phones */
+@media screen and (max-width: 499px) {
+    .search-label {
+        font-size: 3vmax;
+    }
+    #todayCity, #todayBlurb {
+        font-size: 3vmax;
+    }
 }
