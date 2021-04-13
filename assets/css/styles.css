@@ -10,8 +10,11 @@ header {
     align-items: center;
 }
 
+h1 {
+    color: #434646;
+}
 
-h1, h2, h3, h4, span, p {
+h2, h3, h4, span, p {
     color: #968a8a;
 }
 
@@ -115,7 +118,7 @@ h1, h2, h3, h4, span, p {
 
 #forecastCont h2 {
     text-align: center;
-    color: yellow;
+    color: #fff14f;
 }
 
 #forecast {

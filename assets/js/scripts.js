@@ -1,22 +1,17 @@
 
 const savedCityList = $("#past-search");
 let searchIndex = 0;
-let isReal = false;
+
 
 loadDefaultCity();
 
 
-
-if (localStorage.getItem("data") != null) {
+// if there havent been any searches and this item in local storage doesnt exist, run default launch page for DC,
+// past seach button template then foreach to append all stored searches on page refresh
+if (localStorage.getItem("searchedCities") != null) {
     loadDefaultCity();
-    const searchP = document.createElement("p");
-    searchP.innerText = "Washington DC";
-    searchP.classList.add("col-11", "old-search");
-    searchP.setAttribute("onClick", `searchByCity("washington dc")`)
-    savedCityList.append(searchP);
 
-
-    let recentArray = JSON.parse(localStorage.getItem("data"));
+    let recentArray = JSON.parse(localStorage.getItem("searchedCities"));
     recentArray.forEach( (search, index) => {
 
         const searchP = document.createElement("p");
@@ -179,76 +174,103 @@ function getDaily(x, y) {
 }
 
 
-function searchByCity(city) {
+function searchByCity(city, isNewSearch = true) {
     const baseUrl = "https://api.openweathermap.org/data/2.5/forecast?";
     const inputCity = `q=${city}`;
     const timeSpan = "&cnt=6";
     const apiId = "&units=imperial&appid=3807d383248b2e55ef5982aac69761eb";
     const requestUrl = baseUrl + inputCity + timeSpan + apiId;
+    const sanitizedCity = city.toLowerCase();
+
+
+    let dataBox = JSON.parse(localStorage.getItem("searchedCities"));
 
     fetch(requestUrl)
         .then(function (response) {
-           
             return response.json();
         })
         .then(function (data) {
-            isReal = true;
-            console.log(requestUrl);
-            let selCity = data.city.name;
-            let selCountry = data.city.country;
+            if (data.cod === "200") {
+                console.log(data)
 
-            let curTemp = Math.round(data.list[0].main.temp);
-            let feelsLike = Math.round(data.list[0].main.feels_like);
-            let minTemp = Math.round(data.list[0].main.temp_min);
-            let maxTemp = Math.round(data.list[0].main.temp_max);
-
-            let curHumidity = Math.round(data.list[0].main.humidity);
-            let curWindSpeed = Math.round(data.list[0].wind.speed);
-            let curWindDeg = data.list[0].wind.deg;
-            let curWindDir;
-
-            if (curWindDeg >= 315 && curWindDeg <= 45) {
-                curWindDir = "Northernly";
-            } else if (curWindDeg >= 46 && curWindDeg <= 135) {
-                curWindDir = "Easternly";
-            } else if (curWindDeg >= 136 && curWindDeg <= 225) {
-                curWindDir = "Southernly";
-            } else {
-                curWindDir = "Westernly";
-            }
-
-            let curStatus = data.list[0].weather[0].description;
-
-            let cityLat = data.city.coord.lat;
-            let cityLong = data.city.coord.lon;
-            getDaily(cityLat, cityLong);
+                if (dataBox.indexOf(sanitizedCity) == -1 && isNewSearch) {
+                    dataBox.push(sanitizedCity);
+                    console.log(dataBox);
+                    localStorage.setItem("searchedCities", JSON.stringify(dataBox));
+                    appendSearch(searchIndex);
+                    searchIndex++;
+                    
+                }
             
-            $("#todayCity").text(`${selCity}, ${selCountry}`);
-            $("#todayTemp").text(`It is currently ${curTemp}°F`);
-            $("#feelsLike").text(`It feels like ${feelsLike}°F`);
-            $("#dailyHigh").text(`Today's high is ${maxTemp}°F`);
-            $("#dailyLow").text(`Today's Low is ${minTemp}°F`);
+            
+                isReal = true;
+                console.log(requestUrl);
+                let selCity = data.city.name;
+                let selCountry = data.city.country;
 
-            $("#todayHumid").text(`Humidity is currently at ${curHumidity}%`);
-            $("#todayWind").text(`The wind is blowing at ${curWindSpeed} MPH`);
-            $("#todayWindDir").text(`in the ${curWindDir} direction.`);
+                let curTemp = Math.round(data.list[0].main.temp);
+                let feelsLike = Math.round(data.list[0].main.feels_like);
+                let minTemp = Math.round(data.list[0].main.temp_min);
+                let maxTemp = Math.round(data.list[0].main.temp_max);
 
-            $("#todayBlurb").text(`Looks like ${curStatus} ahead!`);
-            return true;
-        });
+                let curHumidity = Math.round(data.list[0].main.humidity);
+                let curWindSpeed = Math.round(data.list[0].wind.speed);
+                let curWindDeg = data.list[0].wind.deg;
+                let curWindDir;
+
+                if (curWindDeg >= 315 && curWindDeg <= 45) {
+                    curWindDir = "Northernly";
+                } else if (curWindDeg >= 46 && curWindDeg <= 135) {
+                    curWindDir = "Easternly";
+                } else if (curWindDeg >= 136 && curWindDeg <= 225) {
+                    curWindDir = "Southernly";
+                } else {
+                    curWindDir = "Westernly";
+                }
+
+                let curStatus = data.list[0].weather[0].description;
+
+                let cityLat = data.city.coord.lat;
+                let cityLong = data.city.coord.lon;
+                getDaily(cityLat, cityLong);
+                
+                $("#todayCity").text(`${selCity}, ${selCountry}`);
+                $("#todayTemp").text(`It is currently ${curTemp}°F`);
+                $("#feelsLike").text(`It feels like ${feelsLike}°F`);
+                $("#dailyHigh").text(`Today's high is ${maxTemp}°F`);
+                $("#dailyLow").text(`Today's Low is ${minTemp}°F`);
+
+                $("#todayHumid").text(`Humidity is currently at ${curHumidity}%`);
+                $("#todayWind").text(`The wind is blowing at ${curWindSpeed} MPH`);
+                $("#todayWindDir").text(`in the ${curWindDir} direction.`);
+
+                $("#todayBlurb").text(`Looks like ${curStatus} ahead!`);
+                return true;
+            } else {
+                alert("Please check your spelling!");
+
+            }
+        })
+        
 }
 
+// appending a button for the searched object (city), where index is an argument to map the local storage.
+// called after my searchByCity() fetch was sucessful and the new searched city doesnt exist already.
+// create a button template and use index # to push new [val] into a button
+function appendSearch(cityIndex) {
 
-function appendSearch(index) {
-    console.log(localStorage)
-
-    if (localStorage.getItem("data") != null) {
-        let recentArray = JSON.parse(localStorage.getItem("data"));
-        let newAppend = recentArray[index];
+    if (localStorage.getItem("searchedCities") != null) {
         const searchP = document.createElement("p");
-        searchP.innerText = newAppend;
         searchP.classList.add("col-11", "old-search");
-        searchP.setAttribute("onClick", `searchByCity("${newAppend}")`);
+
+        let recentArray = JSON.parse(localStorage.getItem("searchedCities"));
+        let newAppend = recentArray[cityIndex];
+        searchP.innerText = newAppend;
+
+        searchP.addEventListener("click", () => {
+            searchByCity(newAppend, false)
+        })
+
         savedCityList.append(searchP);
 
     }
@@ -260,31 +282,19 @@ $("#search-button").click( (e) => {
     e.preventDefault();
     let city = $("#city-search").val();
 
-    searchByCity(city);
     
-
-    if (localStorage.getItem("data") == null) {
-        localStorage.setItem("data", "[]");
+    
+    if (localStorage.getItem("searchedCities") == null) {
+        localStorage.setItem("searchedCities", "[]");
     }
-
-    let dataBox = JSON.parse(localStorage.getItem("data"));
     
-    if (dataBox.indexOf(city) == -1) {
-        dataBox.push(city);
-        console.log(dataBox);
-        localStorage.setItem("data", JSON.stringify(dataBox));
-        appendSearch(searchIndex);
-        searchIndex++;
-    } 
-
-    
-
+    searchByCity(city);
 })
 
 
 $("#clear-history").click( (e) => {
     e.preventDefault();
-    localStorage.setItem("data", "[]");
+    localStorage.setItem("searchedCities", "[]");
     $("#past-search").html(" ");
     searchIndex = 0;
 })
