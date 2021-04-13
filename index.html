@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="./assets/css/reset.css"> -->
+    <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;700&family=Playfair+Display:wght@500&family=Roboto+Slab&display=swap" rel="stylesheet">
     <link rel="icon" href='https://i.pinimg.com/originals/44/d0/5b/44d05b2e0318c257fb9e57427c0a0091.png'>
-    
     <title>Weather Dashboard</title>
 </head>
 
@@ -21,37 +20,37 @@
     </header>
 
     <div class="row">
+        <!-- city search colomn -->
         <article class="col-12 col-lg-2 sec side-nav">
             <label for="city-search" class="search-label">Search your city:</label>
             <input type="text" id="city-search" placeholder="eg. London" name="location">
             <button id="search-button" class="radius button">look up!</button>
             <button id="clear-history" class="radius button">clear history</button>
 
-            <div id="past-search" class="col">
-
-            </div>
-
+            <div id="past-search" class="col"></div>
+            
         </article>
 
+        
         <article class="col-12 col-lg-9 sec big-box">
             <div class="row top-row">
                 <section id="current-weather" class="row">
+                    <!-- city name and info -->
                     <article id="cityCont" class="col-8 col-lg-3">
                         <h2 id="todayCity"></h2>
                         <h6 id="cityDate"></h6>
                         <h6 id="cityTime"></h6>
                         <p id="todayBlurb"></p>
                     </article>
-                    
+                    <!-- temperature info -->
                     <article id="tempInfo" class="col-8 col-lg-4 sec">
                         <p id="todayTemp"></p>
                         <p id="feelsLike"></p>
                         <p id="dailyHigh"></p>
                         <p id="dailyLow"></p>
                     </article>
-
+                    <!-- weather info -->
                     <article id="weatherInfo" class="col-8 col-lg-5 sec">
-                        
                         <p id="todayHumid"></p>
                         <p id="todayWind"></p>
                         <p id="todayWindDir"></p>
@@ -60,6 +59,7 @@
                 </section>
             </div>
 
+            <!-- 5 day forecast -->
             <section id="forecastCont">
                 <h2>5 day forecast</h2>
                 <div id="forecast" class="row sec">
@@ -108,8 +108,6 @@
 
 
 </body>
-<script 
-    src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="

@@ -19,7 +19,6 @@ h2, h3, h4, span, p {
 }
 
 .search-label {
-    /* text-decoration: underline; */
     font-size: 4rem;
     font-family: system-ui;
     padding-top: 15px;
@@ -40,9 +39,6 @@ h2, h3, h4, span, p {
     border-radius: 5px;
     margin: 5px 0;
 }
-
-
-
 
 #search-button {
     margin-bottom: 10px;
@@ -66,8 +62,6 @@ h2, h3, h4, span, p {
     background-color: transparent;
     padding-left: 0;
 }
-
-
 
 .big-box {
     margin: auto;
@@ -137,7 +131,6 @@ h2, h3, h4, span, p {
     font-size: small;
 }
 
-
 .row {
     margin: 0;
 }
@@ -149,7 +142,7 @@ h2, h3, h4, span, p {
     
 }
 
-
+/* screen event when the bootstrap colomns switch from large to small */
 @media screen and (max-width: 992px) {
     .row {
         flex-wrap: wrap;
@@ -157,7 +150,6 @@ h2, h3, h4, span, p {
     #tempInfo, #weatherInfo {
         margin: 10px auto;
     }
-    
     #tempInfo p, #weatherInfo p, .card {
         font-size: 2vmax;
     }
