@@ -74,5 +74,5 @@ MIT - ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)(https
   - ![App page phone screen](./assets/images/appphonescreen.png)
 
 * Links:
-  - [Repo page](https://github.com/ForestW70/hw6weatherdashboard)
-  - [Deployed page](https://forestw70.github.io/hw6weatherdashboard/)
+  - [Repo page](https://github.com/ForestW70/Week-6-Weather-Dashboard)
+  - [Deployed page](https://forestw70.github.io/Week-6-Weather-Dashboard/)
