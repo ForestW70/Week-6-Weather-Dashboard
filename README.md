@@ -42,12 +42,12 @@ MIT - ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)(https
 (Apr/13/21)
 
   - This project took me way longer than I thought to complete. Looking back on how many moving parts were really needed to get this app running I feel good that I was able to impliment all the criteria, but it really seemed like every aspect of this was breaking all the time, but I guess thats how it goes.
-
-  - I found incredible frustration implementing proper time and date functionality. I initially started to try using momentjs but after many, many issues and googling it really seemed like the js date object was what I really needed, especially when I had to use a unix format to translate it to plain text.
-
+  
   - also spent way too long trying to get local time to display accuratly on the selected city screen just to reread the prompt and realize it was totally uneeded. doh.
 
   - It was really hard to tell if the weather info i was grabbing was even accurate to the area, so it took me a while to make finalize the appened data for the cities correctly. the data objects helped me confirm that the cities had unique weather data showing up, but when I compared to other weather app for the cities that data seemed to diverge a lot. to the best of my knowledge the weather is getting called correctly, but I think that you might need to buy the dlc to get the real accurate weather.
+
+  - There seems to be a bug where if you are loading in for the first time, the dashboard display will look broken. To fix this, just search an initial city. 
 
 (Oct/26/21)
 
